@@ -6,7 +6,7 @@ const{expect} = require("chai");
  * Verify feelsLikeTempValue is between lowTempValue and highTempValue
  */
 describe('Homework tests', () => {
-    it('Verify feelsLikeTempValue is between lowTempValue and highTempValue', async () => {
+    it.only('Verify feelsLikeTempValue is between lowTempValue and highTempValue', async () => {
         /**
         * Given I am on darksky.net
         *   And I get feels-like-temp
@@ -18,11 +18,24 @@ describe('Homework tests', () => {
         await browser.url('https://darksky.net');
         await browser.pause(3000);
 
-        const feelsLikeTemp = await $('span[class=feels-like-text]');
-        const highTemp = await $('span[class=high-temp-text]');
-        const lowTemp = await $('span[class=low-temp-text]');
+        const feelsLikeTempElement = await $('span[class=feels-like-text]').getText();
+        // const feelslikeTemp = feelsLikeTempElement.substring(0,2);
+        const feelslikeTemp = parseInt(feelsLikeTempElement);
+
+        const highTempElement = await $('span[class=high-temp-text]').getText();
+        // const highTemp = highTempElement.substring(0,2);
+        const highTemp = parseInt(highTempElement);
+
+        const lowTempElement = await $('span[class=low-temp-text]').getText();
+        // const lowTemp = lowTempElement.substring(0,2);
+        const lowTemp = parseInt(lowTempElement);
+
+        console.log(`\nfeels like -> ${feelslikeTemp} \n\n`);
+        console.log(`high -> ${highTemp}\n\n`);
+        console.log(`low -> ${lowTemp}\n`);
         
-        expect((feelsLikeTemp >= lowTemp && feelsLikeTemp <= highTemp), 'FeelsLikeTemp is not between high and low temp').to.be.true;
+        
+        expect((feelslikeTemp >= lowTemp && feelslikeTemp <= highTemp), 'FeelsLikeTemp is not between high and low temp').to.be.true;
         
 
      });
@@ -138,7 +151,7 @@ describe('Homework tests', () => {
         //Verify 'Keep me signed in' is not selected
         const keepMeSignedIn = await $('input[type=checkbox]');
         const isKeepMeSignedInSelected = await keepMeSignedIn.isSelected();
-        expect(isKeepMeSignedInSelected, 'Keep me signed in is selected').not.to.be.true;
+        expect(isKeepMeSignedInSelected, 'Keep me signed in is selected').to.be.false;
 
         // // Click log in button
         const logInButton = await $('#loginbutton');
@@ -158,7 +171,7 @@ describe('Homework tests', () => {
         expect(isContinueButtonEnabled, 'Continue button is not enabled').to.be.true;
 
         // Verify 'Keep me signed in' is not selected
-        expect(isKeepMeSignedInSelected, 'Keep me signed in is selected').not.to.be.true;
+        expect(isKeepMeSignedInSelected, 'Keep me signed in is selected').to.be.false;
 
 
         // Click 'Keep me signed in'
